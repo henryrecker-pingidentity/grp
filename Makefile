@@ -1,4 +1,10 @@
-VERSION=latest
+.PHONY: install
+
+default: install
 
 install:
-	@go install -ldflags="-X main.version=$(VERSION)" .
+	go mod tidy
+	go install .
+
+dockerbuild:
+	docker build -t grp:latest .

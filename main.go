@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/aguerra/grp/server"
+	"github.com/henryrecker-pingidentity/grp/server"
 	log "github.com/inconshreveable/log15"
 	logext "github.com/inconshreveable/log15/ext"
 	"github.com/kelseyhightower/envconfig"

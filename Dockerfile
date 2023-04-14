@@ -1,10 +1,23 @@
-FROM golang:1.7
+FROM golang:1.19
 
-RUN mkdir -p /go/src/github.com/aguerra/grp
-WORKDIR /go/src/github.com/aguerra/grp
-COPY . /go/src/github.com/aguerra/grp
+# Set destination for COPY
+WORKDIR /app
 
-RUN make install
+# Download Go modules
+COPY go.mod go.sum ./
+RUN go mod download
 
-ENTRYPOINT ["grp"]
+# Copy the source code. Note the slash at the end, as explained in
+# https://docs.docker.com/engine/reference/builder/#copy
+#TODO probably improve this and don't hardcode the directories
+COPY *.go ./
+COPY radius/*.go ./radius/
+COPY server/*.go ./server/
+
+# Build
+RUN CGO_ENABLED=0 GOOS=linux go build -o /grp
+
 EXPOSE 2083/tcp
+
+# Run
+ENTRYPOINT ["/grp"]

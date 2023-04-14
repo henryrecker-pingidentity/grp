@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/aguerra/grp/radius"
+	"github.com/henryrecker-pingidentity/grp/radius"
 	log "github.com/inconshreveable/log15"
 )
 

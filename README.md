@@ -1,5 +1,4 @@
 # grp
-[![Build Status](https://travis-ci.org/aguerra/grp.svg)](https://travis-ci.org/aguerra/grp)
 
 Grp is a extremely simple radsec proxy written in Golang: it only supports
 forwarding packets incoming from the TLS 1.2 connection to a radius UDP backend.

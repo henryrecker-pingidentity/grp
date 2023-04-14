@@ -33,13 +33,13 @@ func newTestServer(port int) *Server {
 	return srv
 }
 
-func newConn(keyFile, certFile, addr string) (*tls.Conn, error) {
+func newConn(keyFile, certFile, addr string, insecureSkipVerify bool) (*tls.Conn, error) {
 	cert, err := tls.LoadX509KeyPair(certFile, keyFile)
 	if err != nil {
 		return nil, err
 	}
 	conn, err := tls.Dial("tcp", addr, &tls.Config{
-		InsecureSkipVerify: true,
+		InsecureSkipVerify: insecureSkipVerify,
 		Certificates:       []tls.Certificate{cert},
 	})
 	if err != nil {
@@ -66,7 +66,7 @@ func TestListenAndServe(t *testing.T) {
 	}
 	certFile := "testdata/client.crt"
 	keyFile := "testdata/client.key"
-	conn, err := newConn(keyFile, certFile, "localhost:5000")
+	conn, err := newConn(keyFile, certFile, "localhost:5000", true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -102,9 +102,9 @@ func TestListenAndServeErrCredentials(t *testing.T) {
 	}
 	certFile := "testdata/client_err.crt"
 	keyFile := "testdata/client_err.key"
-	conn, err := newConn(keyFile, certFile, "localhost:6000")
+	conn, err := newConn(keyFile, certFile, "localhost:6000", false)
 	if conn != nil {
-		t.Errorf("Conn = %v; want nil", conn)
+		t.Error("Got conn; want nil")
 	}
 	if err == nil {
 		t.Errorf("Got nil; want error")
