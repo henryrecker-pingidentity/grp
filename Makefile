@@ -8,3 +8,6 @@ install:
 
 dockerbuild:
 	docker build -t grp:latest .
+
+test:
+	go test ./...

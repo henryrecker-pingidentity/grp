@@ -1,4 +1,5 @@
-FROM golang:1.19
+# Build stage
+FROM golang:1.19 AS builder
 
 # Set destination for COPY
 WORKDIR /app
@@ -16,6 +17,10 @@ COPY server/*.go ./server/
 
 # Build
 RUN CGO_ENABLED=0 GOOS=linux go build -o /grp
+
+# Second stage to reduce size of image
+FROM alpine:latest
+COPY --from=builder /grp /grp
 
 EXPOSE 2083/tcp
 
